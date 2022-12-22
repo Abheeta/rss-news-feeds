@@ -17,7 +17,7 @@
         <h2 id="news-title">
         </h2> 
         <div>
-            <button class="favourite" onclick="">
+            <button class="favourite" onclick="clickHandler()">
                  <span class="material-symbols-outlined">favorite</span>
             </button>
         </div>
@@ -26,6 +26,28 @@
         <p id="news-description"></p>
 
         <script>
+            
+            function clickHandler(){
+                let searchParam = new URLSearchParams(window.location.search);
+                let newsId = searchParam.get('id');
+
+                fetch('/api/favourites', 
+                {   method: 'POST',
+                    body: JSON.stringify({
+                        newsId: newsId,
+                        title: document.getElementById('news-title').innerHTML
+                    })
+                
+                }
+                )
+                .then(response => response.json())
+                .then(result => {
+                    
+                    console.log(result);
+
+                })
+           
+            }
              fetch('/feeds')
             .then(response => response.text())
             .then(str => new DOMParser().parseFromString(str, "text/xml"))
