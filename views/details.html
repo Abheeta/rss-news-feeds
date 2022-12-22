@@ -1,0 +1,60 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+        <link rel="stylesheet" href="styles.css">
+        <style>
+            .material-symbols-outlined {
+              font-variation-settings:
+              'FILL' 0,
+              'wght' 400,
+              'GRAD' 0,
+              'opsz' 48
+            }
+        </style>
+    </head>
+
+    <body>
+        <h2 id="news-title">
+        </h2> 
+        <div>
+            <button class="favourite" onclick="">
+                 <span class="material-symbols-outlined">favorite</span>
+            </button>
+        </div>
+      
+        <img id="news-image">
+        <p id="news-description"></p>
+
+        <script>
+             fetch('/feeds')
+            .then(response => response.text())
+            .then(str => new DOMParser().parseFromString(str, "text/xml"))
+            .then(feeds => {
+                let items = feeds.getElementsByTagName('item');
+                // console.log(items);
+                let searchParam = new URLSearchParams(window.location.search);
+                let newsId = searchParam.get('id');
+                let listParent = document.createElement('ul');
+                let newsItem
+                for(let i = 0; i < items.length; i++){
+                    if(items[i].getElementsByTagName('guid')[0].getAttribute('identifier') === newsId){
+                        newsItem = items[i];
+                        break;
+                    }
+                }
+
+                let newsTitle = newsItem.getElementsByTagName('title')[0].textContent;
+                document.getElementById('news-title').innerHTML = `${newsTitle} `;
+
+
+                let description = newsItem.getElementsByTagName('description')[0].textContent;
+                document.getElementById('news-description').innerHTML = `${description}`;
+
+                let newsImg = newsItem.getElementsByTagName('StoryImage')[0].textContent;
+                document.getElementById('news-image').setAttribute('src', newsImg);
+                
+            
+            })
+        </script>
+    </body>
+</html>

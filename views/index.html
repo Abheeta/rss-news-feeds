@@ -1,0 +1,27 @@
+<html>
+    <body>
+        <ul id="titles-list"></ul>
+        <script>
+            // let RSS_URL = 'https://feeds.feedburner.com/ndtvnews-top-stories';
+            fetch('/feeds')
+            .then(response => response.text())
+            .then(str => new DOMParser().parseFromString(str, "text/xml"))
+            .then(feeds => {
+                let items = feeds.getElementsByTagName('item');
+                console.log(items);
+                let listParent = document.getElementById('titles-list')
+                for(let i = 0; i < items.length; i++){
+                    let title = items[i].getElementsByTagName('title')[0].textContent;
+                    let guid = items[i].getElementsByTagName('guid')[0].getAttribute("identifier");    
+                    console.log(title);
+                    let titleList = document.createElement('li')
+                    let titleLink = document.createElement('a');
+                    titleLink.setAttribute('href', `/details?id=${guid}`);
+                    titleLink.innerHTML = `${title}`;
+                    listParent.appendChild(titleList);
+                    titleList.appendChild(titleLink);
+                }
+            })
+        </script>
+    </body>
+</html>
