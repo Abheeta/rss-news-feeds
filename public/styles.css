@@ -1,3 +1,23 @@
 a:visited {
-    color:inherit;
+    color: LinkText;
 }
+
+#newslist, #favouriteslist{
+    margin: 1rem;
+    padding: 1rem;
+}
+
+.image{
+    object-fit: cover;
+    width: 30rem;
+    height: 30rem;
+}
+
+button:active{
+    background: gray;
+}
+
+button:focus{
+    background: darkgray;
+}
+
